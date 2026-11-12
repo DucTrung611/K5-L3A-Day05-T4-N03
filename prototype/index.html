@@ -117,11 +117,11 @@ const CASES=[
  ai:()=>`${N(1)}<span class="conf c-ask">Chưa phải "sai mô tả"</span><p style="margin:4px 0">Đơn của bạn được giao thành <b>2 kiện</b>. Kiện 2 vẫn đang trên đường, nên mình chưa mở khiếu nại hoàn tiền. Nếu nhận đủ mà hàng vẫn sai mô tả, bạn báo lại, mình xử ngay.</p>${CMP(['Kiện','Món','Trạng thái'],[['1','Ốp lưng','Đã giao 12/11'],['2','Kính cường lực','Đang giao, dự kiến 14/11']],[1])}${ST('Hạn trả hàng tính từ ngày bạn nhận <b>từng kiện</b>. Kiện 1: còn <b>6 ngày</b> (đến 19/11).')}<div class="btns">${ADD('Theo dõi kiện 2')}<button class="btn" onclick="add()">Kiện 1 sai mô tả</button>${HUMAN}${FB}</div>`,
  seller:null,staff:null,
  risk:'Đơn tách 2 kiện, kiện kia chưa tới. AI hoàn cả đơn: gộp "giao thiếu" với "sai mô tả".',good:'Kiểm tra tình trạng từng kiện. Kiện 2 đang đi thì nói vậy, chưa mở khiếu nại hoàn.'},
-{id:'K4',t:'Đổi ý giữa chừng',g:4,lop:'④ Mất tiền',nhan:'khong',msgs:['áo sai size','mà thôi thật ra mình không thích nữa'],order:'ĐH-4822 · Áo thun nam (size M)',
+{id:'K4',t:'Đổi ý giữa chừng',g:2,lop:'② Thiếu tin + ④ Mất tiền',nhan:'khong',msgs:['áo sai size','mà thôi thật ra mình không thích nữa'],order:'ĐH-4822 · Áo thun nam (size M)',
  ai:()=>`${N(3)}<span class="conf c-ask">Cần xác nhận lý do</span><p style="margin:4px 0">Mình hiểu là bạn <b>không thích áo nữa</b>, không phải hàng sai size. Hai việc này xử khác nhau: đổi ý đi theo <b>chính sách đổi trả riêng</b>, không tính là shop gửi sai. Bạn muốn:</p>${CH(['Hàng thật sự sai size','Mình đổi ý'])}${ST('Mình chưa tạo khiếu nại "sai mô tả". Chưa có gì gửi cho shop.')}<div class="btns">${HUMAN}${FB}</div>`,
  seller:null,staff:null,
  risk:'AI bám lý do đầu ("sai size") và xử như sai mô tả. Lý do thật là đổi ý, người bán không có lỗi.',good:'Hỏi lý do cuối cùng. Đổi ý thì sang luồng đổi trả riêng, không gọi là "sai mô tả".'},
-{id:'K5',t:'Màu lệch ánh sáng',g:4,lop:'④ Mất tiền',nhan:'sua',msgs:['Màu thật khác màu trên ảnh, không đúng mô tả'],order:'ĐH-4840 · Váy xanh navy',
+{id:'K5',t:'Màu lệch ánh sáng',g:1,lop:'① Nguồn sự thật + ④ Mất tiền',nhan:'sua',msgs:['Màu thật khác màu trên ảnh, không đúng mô tả'],order:'ĐH-4840 · Váy xanh navy',
  ai:()=>`${N(1)}<span class="conf c-no">Chưa đủ căn cứ</span><p style="margin:4px 0">Mô tả lúc bạn đặt có ghi <b>"màu có thể lệch nhẹ do ánh sáng"</b>, nên mình chưa coi lệch màu nhẹ là sai mô tả. Nếu màu khác nhiều (ví dụ xanh thành xám), bạn chụp giúp mình để so.</p>${CMP(['Mục','Mô tả lúc đặt (09/11)','Bạn nói'],[['Màu','Xanh navy. Màu có thể lệch nhẹ do ánh sáng','"khác màu" (chưa có ảnh)']],[0],'Chưa so được: mức lệch thực tế.')}${ST('Gửi 2 ảnh: <b>hàng cạnh ảnh trên trang bán</b>, chụp ban ngày. Hạn trả hàng còn <b>4 ngày</b>.')}<div class="btns">${ADD('Gửi ảnh so sánh')}${HUMAN}${FB}</div>`,
  seller:null,staff:null,
  risk:'AI thấy chữ "khác màu" → coi là sai mô tả → hoàn. Mô tả lúc đặt đã báo trước có thể lệch.',good:'Đọc cả câu lưu ý trong mô tả lúc đặt. Lệch nhiều thì xin ảnh so sánh, không thì "chưa đủ căn cứ".'},
@@ -245,5 +245,9 @@ $('#ann').onchange=e=>document.body.classList.toggle('hide-n',!e.target.checked)
 $('#ok').onchange=e=>$('#send').disabled=!e.target.checked;
 $('#cancel').onclick=()=>$('#m').classList.remove('show');
 $('#send').onclick=()=>{$('#m').classList.remove('show');$('#ok').checked=false;$('#send').disabled=true;sm('Đã xác nhận hoàn tiền (giả lập). Ghi lại: nhân viên quyết, đã xem mô tả lúc đặt.')};
+/* mở thẳng một ca/tab qua địa chỉ, ví dụ index.html#K8/buyer hoặc #K7/staff */
+(function(){const h=(location.hash||'').replace('#','').split('/');
+ if(h[0]&&byId(h[0]))CUR=h[0];
+ if(['buyer','seller','staff'].includes(h[1])){T=h[1];document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.t===T))}})();
 renderAnn();renderChips();render();setInterval(tick,1000);
 </script></body></html>
